@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f3ec">
+  <meta name="description" content="Private Alkohol-Schätzung und persönliches Getränke-Sammelalbum – lokal auf deinem Gerät.">
+  <title>Maßvoll — Dein Abend, bewusst erlebt</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#start" aria-label="Maßvoll Startseite"><span class="brand-mark">m</span><span>maßvoll<span class="brand-dot">.</span></span></a>
+    <nav aria-label="Hauptnavigation">
+      <a class="nav-link" href="#rechner">Schätzung</a>
+      <a class="nav-link" href="#album">Sammelalbum</a>
+    </nav>
+    <span class="local-pill"><span></span> Nur auf diesem Gerät</span>
+  </header>
+
+  <main id="start">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">SERVUS, SAMMELPROFI.</p>
+        <h1>Maß halten.<br><em>Maßkrug merken.</em></h1>
+        <p class="hero-text">Ein grober Promille-Check und ein Sammelalbum für bayerische Bierlegenden. Dein Körper bleibt kompliziert. Wenigstens die App ist es nicht.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#rechner">Schätzung starten <span aria-hidden="true">↘</span></a>
+          <a class="text-link" href="#album">Zum Sammelalbum <span aria-hidden="true">→</span></a>
+        </div>
+        <p class="hero-note"><span class="spark" aria-hidden="true">✳</span> Ab 18 · Deine Daten bleiben lokal · Kein Wiesn-Diplom nötig</p>
+      </div>
+      <div class="hero-art" role="img" aria-label="Stilisierte Illustration eines Bierkrugs">
+        <div class="sun"></div>
+        <div class="arch"></div>
+        <div class="table"></div>
+        <div class="mug">
+          <div class="foam"></div>
+          <div class="beer"></div>
+          <div class="handle"></div>
+          <div class="mug-shine"></div>
+        </div>
+        <span class="art-caption">ein guter Abend<br>hat viele Facetten</span>
+        <span class="art-leaf leaf-one">✳</span>
+        <span class="art-leaf leaf-two">✳</span>
+      </div>
+    </section>
+
+    <section id="rechner" class="section calculator-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">01 — DER LEISE REALITÄTSCHECK</p>
+          <h2>Was könnte noch<br>im Blut sein?</h2>
+        </div>
+        <p class="section-intro">Ein Näherungswert nach der Widmark-Formel. Dein Körper ist keine Formel – das Ergebnis kann stark abweichen. Der Taschenrechner ist nüchterner als du.</p>
+      </div>
+
+      <div class="calculator-layout">
+        <form id="calculator" class="panel form-panel">
+          <div class="form-section-title">
+            <span class="step">A</span>
+            <div><h3>Deine Angaben</h3><p>So individuell wie du.</p></div>
+          </div>
+          <div class="field-grid">
+            <label class="field">
+              <span>Körpergewicht</span>
+              <div class="input-wrap"><input name="weight" type="number" min="35" max="250" step="0.1" placeholder="z. B. 72" required><span>kg</span></div>
+            </label>
+            <label class="field">
+              <span>Körperwasser-Faktor</span>
+              <select name="factor">
+                <option value="0.68">Männlich (grobe Annahme)</option>
+                <option value="0.55">Weiblich (grobe Annahme)</option>
+                <option value="0.615">Eigener Mittelwert</option>
+              </select>
+              <small class="field-hint">Statistische Annahme, die individuell stark variiert.</small>
+            </label>
+            <label class="field">
+              <span>Trinkdauer</span>
+              <div class="input-wrap"><input name="duration" type="number" min="0.25" max="24" step="0.25" value="2" required><span>Std.</span></div>
+            </label>
+            <label class="field">
+              <span>Seit dem letzten Getränk</span>
+              <div class="input-wrap"><input name="elapsed" type="number" min="0" max="48" step="0.25" value="0" required><span>Std.</span></div>
+            </label>
+          </div>
+
+          <div class="form-section-title drinks-title">
+            <span class="step">B</span>
+            <div><h3>Deine Getränke</h3><p>Menge und Alkoholgehalt möglichst genau schätzen.</p></div>
+          </div>
+          <div id="drink-list" class="drink-list"></div>
+          <button id="add-drink" class="add-drink" type="button"><span aria-hidden="true">＋</span> Getränk hinzufügen</button>
+
+          <div class="form-foot">
+            <label class="checkline"><input id="ack" type="checkbox" required><span>Ich verstehe, dass dies keine Messung ist.</span></label>
+            <button class="button primary submit" type="submit">Wert schätzen <span aria-hidden="true">→</span></button>
+          </div>
+        </form>
+
+        <aside class="result-card" aria-live="polite">
+          <div class="result-top"><span class="result-label">DEINE GROBE SCHÄTZUNG</span><span class="result-icon" aria-hidden="true">◌</span></div>
+          <div id="result-empty" class="result-empty">
+            <div class="result-orbit" aria-hidden="true">≈</div>
+            <h3>Noch kein Wert</h3>
+            <p>Fülle die Angaben aus, um eine grobe Orientierung zu erhalten.</p>
+          </div>
+          <div id="result-value" class="result-value" hidden>
+            <strong><span id="bac-number">0,00</span><small>‰</small></strong>
+            <div id="range-text" class="range-text"></div>
+            <div id="result-status" class="result-status"></div>
+            <div id="breakdown" class="breakdown"></div>
+          </div>
+          <div class="result-warning">
+            <span aria-hidden="true">!</span>
+            <p><b>Wichtig:</b> Nicht fahren – auch nicht mit einem niedrigen Schätzwert. Nur Zeit baut Alkohol ab. Kaffee, Schlaf und Duschen helfen nicht.</p>
+          </div>
+        </aside>
+      </div>
+      <p class="source-note">Die Rechnung ist eine stark vereinfachte Widmark-Näherung mit pauschalem Abbauwert. Nahrung, Medikamente, Gesundheit, Körperzusammensetzung und Aufnahmezeitpunkt verändern den tatsächlichen Wert erheblich.</p>
+    </section>
+
+    <section id="album" class="section album-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">02 — DEINE BIER-KARTEI</p>
+          <h2>Ein Album voller<br><em>Geschichten.</em></h2>
+        </div>
+        <p class="section-intro">Von Augustiner bis Zoigl: Sammle bekannte Marken und regionale Eigenheiten. Mach ein Foto oder lade eines hoch – dein privates Album bleibt auf diesem Gerät.</p>
+      </div>
+      <div class="album-toolbar">
+        <div class="album-count"><strong id="album-progress">0</strong><span>von <span id="album-total">0</span> gesammelt</span></div>
+        <div class="filters" role="group" aria-label="Getränke filtern">
+          <button class="filter active" type="button" data-filter="all" aria-pressed="true">Alle</button>
+          <button class="filter" type="button" data-filter="Bier" aria-pressed="false">Bier</button>
+          <button class="filter" type="button" data-filter="Wein &amp; Cider" aria-pressed="false">Wein &amp; Cider</button>
+          <button class="filter" type="button" data-filter="Klassiker" aria-pressed="false">Klassiker</button>
+        </div>
+      </div>
+      <div id="collection" class="collection"></div>
+      <div class="album-privacy">
+        <span aria-hidden="true">✳</span>
+        <p><b>Deine Sammlung gehört dir.</b> Fotos werden in diesem Browser auf deinem Gerät gespeichert. Browserdaten löschen oder ein anderes Gerät verwenden bedeutet, dass die Sammlung nicht verfügbar ist.</p>
+      </div>
+    </section>
+
+    <section class="closing">
+      <span class="closing-star" aria-hidden="true">✳</span>
+      <p>Die beste Gschicht ist die, an die du dich morgen noch erinnerst.</p>
+      <span class="closing-sub">PASS AUF DICH UND DEINE FREUNDE AUF.</span>
+    </section>
+  </main>
+
+  <footer>
+    <a class="brand" href="#start" aria-label="Maßvoll Startseite"><span class="brand-mark">m</span><span>maßvoll<span class="brand-dot">.</span></span></a>
+    <span>Eine private, browserbasierte Orientierung.</span>
+    <a href="#start">Zurück nach oben ↑</a>
+  </footer>
+
+  <dialog id="upload-dialog" aria-labelledby="dialog-title">
+    <form method="dialog" class="dialog-inner">
+      <button class="dialog-close" aria-label="Schließen">×</button>
+      <p class="eyebrow">DEIN ALBUM</p>
+      <h2 id="dialog-title">Getränk ergänzen</h2>
+      <p id="dialog-drink-name" class="dialog-drink-name"></p>
+      <label class="upload-zone">
+        <span class="upload-symbol" aria-hidden="true">↥</span>
+        <b>Foto auswählen</b>
+        <span>JPG, PNG oder WebP · bleibt auf diesem Gerät</span>
+        <input id="photo-input" class="visually-hidden" type="file" accept="image/*">
+      </label>
+      <div id="preview-wrap" class="preview-wrap" hidden>
+        <img id="photo-preview" alt="Vorschau des ausgewählten Fotos">
+        <button id="remove-photo" type="button" class="remove-photo">Foto entfernen</button>
+      </div>
+      <label class="field note-field">
+        <span>Deine Notiz <small>(optional)</small></span>
+        <textarea id="drink-note" rows="3" maxlength="160" placeholder="Wo hast du es probiert?"></textarea>
+      </label>
+      <button id="save-entry" class="button primary dialog-save" type="button">Im Album speichern <span aria-hidden="true">→</span></button>
+      <button id="delete-entry" class="delete-entry" type="button" hidden>Eintrag entfernen</button>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
